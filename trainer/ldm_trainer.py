@@ -11,7 +11,7 @@ from collections import namedtuple
 import torch 
 from torch import nn, einsum, Tensor
 import torch.nn.functional as F
-from torch.cuda.amp import autocast, GradScaler
+from torch.amp import autocast, GradScaler
 from torch.utils.data import DataLoader
 from torch.optim import Adam
 from multiprocessing import cpu_count
@@ -136,7 +136,7 @@ class Trainer1D(object):
 
         # Mixed Precision Setup
         self.amp = amp
-        self.scaler = GradScaler() if self.amp else None
+        self.scaler = GradScaler('cuda') if self.amp else None
 
 
     def _get_data(self, latent_data, gt=False):        
@@ -199,7 +199,7 @@ class Trainer1D(object):
                     cad_emb, image_emb = batch[0].to(self.device), batch[1].to(self.device)
 
                     if self.amp:
-                        with autocast():
+                        with autocast('cuda'):
                             loss = self.model(cad_emb, cond=image_emb)
                             loss = loss / self.gradient_accumulate_every
                             total_loss += loss.item()
