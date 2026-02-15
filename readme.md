@@ -27,7 +27,7 @@
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/ferdous-alam/GenCAD
+   git clone https://github.com/3dewberries/GenCAD
    cd GenCAD
    ```
 
@@ -72,23 +72,28 @@
 
 ### Option 2: Manual (conda + pip)
 
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/3dewberries/GenCAD
+   cd GenCAD
+   ```
 
-1. Create and activate a virtual environment with GPU support:
+2. Create and activate a virtual environment with GPU support:
    ```bash
    conda create -n gencad_env python=3.10 -y
    conda activate gencad_env
 
-2. Install `pythonocc-core` using conda:
+3. Install `pythonocc-core` using conda:
    ```bash
    conda install -c conda-forge pythonocc-core=7.9.0
    ```
 
-3. Install the rest via pip:
+4. Install the rest via pip:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Download the dataset
+5. Download the dataset
    Download the archived datafiles from [here](https://drive.google.com/drive/folders/1M0dPr5kILGY9HTRCHox1vLLDhhxJWl_C?usp=sharing).
    Unpack the data and copy them as follows into the `data/` directory:
    - cad_vec.zip file - unzip and copy the `data/cad_vec` directory in the archive as a target `data/cad_vec` directory
@@ -96,10 +101,10 @@
    - images.zip file - unzip and copy the `images` directory in the archive as a target `data/images` directory
    - sketches.zip file - unzip and copy the `data/sketches` directory in the archive as a target `data/sketches` directory
 
-4. Download the pretrained models
+6. Download the pretrained models
    Download the models from [here](https://drive.google.com/drive/folders/1Ej7wdtlqT5P-SoUf3gsZXD8b78XqhiI5?usp=sharing) and place them in `model/ckpt/`.
 
-5. Now run training or inference:
+7. Now run training or inference:
    ```bash
    python train_gencad.py csr -name test -gpu 0
    ```
