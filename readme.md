@@ -36,22 +36,20 @@
    docker build -t gencad:latest .
    ```
 
-3. Download the dataset
-   Download the archived datafiles from [here](https://drive.google.com/drive/folders/1M0dPr5kILGY9HTRCHox1vLLDhhxJWl_C?usp=sharing).
+3. Download the archived datafiles from [here](https://drive.google.com/drive/folders/1M0dPr5kILGY9HTRCHox1vLLDhhxJWl_C?usp=sharing).
    Unpack the data and copy them as follows into the `data/` directory:
    - cad_vec.zip file - unzip and copy the `data/cad_vec` directory in the archive as a target `data/cad_vec` directory
    - embeddings.zip file - unzip and copy the `embeddings` directory in the archive as a target `data/embeddings` directory
    - images.zip file - unzip and copy the `images` directory in the archive as a target `data/images` directory
    - sketches.zip file - unzip and copy the `data/sketches` directory in the archive as a target `data/sketches` directory
 
-4. Download the pretrained models
-   Download the models from [here](https://drive.google.com/drive/folders/1Ej7wdtlqT5P-SoUf3gsZXD8b78XqhiI5?usp=sharing) and place them in `model/ckpt/`.
+5. Download the models from [here](https://drive.google.com/drive/folders/1Ej7wdtlqT5P-SoUf3gsZXD8b78XqhiI5?usp=sharing) and place them in `model/ckpt/`.
 
-5. Run a script, for example training CSR:
+6. Run a script, for example training CSR:
    ```bash
    docker run -it gencad:latest conda run -n gencad_env python train_gencad.py csr -name test -gpu 0
    ```
-6. For headless visualization (inference):
+7. For headless visualization (inference):
 
    First, enter the container with GPU access and mount the appropriate folders:
 
@@ -93,16 +91,14 @@
    pip install -r requirements.txt
    ```
 
-5. Download the dataset
-   Download the archived datafiles from [here](https://drive.google.com/drive/folders/1M0dPr5kILGY9HTRCHox1vLLDhhxJWl_C?usp=sharing).
+5. Download the archived datafiles from [here](https://drive.google.com/drive/folders/1M0dPr5kILGY9HTRCHox1vLLDhhxJWl_C?usp=sharing).
    Unpack the data and copy them as follows into the `data/` directory:
    - cad_vec.zip file - unzip and copy the `data/cad_vec` directory in the archive as a target `data/cad_vec` directory
    - embeddings.zip file - unzip and copy the `embeddings` directory in the archive as a target `data/embeddings` directory
    - images.zip file - unzip and copy the `images` directory in the archive as a target `data/images` directory
    - sketches.zip file - unzip and copy the `data/sketches` directory in the archive as a target `data/sketches` directory
 
-6. Download the pretrained models
-   Download the models from [here](https://drive.google.com/drive/folders/1Ej7wdtlqT5P-SoUf3gsZXD8b78XqhiI5?usp=sharing) and place them in `model/ckpt/`.
+6. Download the models from [here](https://drive.google.com/drive/folders/1Ej7wdtlqT5P-SoUf3gsZXD8b78XqhiI5?usp=sharing) and place them in `model/ckpt/`.
 
 7. Now run training or inference:
    ```bash
