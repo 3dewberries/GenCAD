@@ -23,6 +23,8 @@
 
 ---
 
+## 🔧 Setup Options
+
 ### Option 1: Docker (Recommended)
 
 1. Clone the repo:
