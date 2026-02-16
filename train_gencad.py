@@ -15,7 +15,7 @@ from utils import CADLoss, get_dataloader, get_ccip_dataloader, GradualWarmupSch
 from utils.cad_dataset import DPDataset
 
 
-def train_model(model="autoencoder", args=None):
+def train_model(model="csr", args=None):
 
     if model=="csr":
 
@@ -158,7 +158,7 @@ def train_model(model="autoencoder", args=None):
         trainer.train()
 
     else:
-        raise Exception("please choose between: autoencoder/ccip")
+        raise Exception("please choose between: csr/ccip/dp")
     
 
 
