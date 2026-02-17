@@ -90,9 +90,11 @@ class TrainerCCIPModel:
 
             save_path = os.path.join(self.model_path, "img_encoder_ckpt_epoch{}.pth".format(self.epoch))
             torch.save({
-                'model_state_dict': model_state_dict, 
-                'optimizer_state_dict': self.optimizer.state_dict()
-                }, 
+                    'epoch': self.epoch,
+                    'model_state_dict': model_state_dict,
+                    'optimizer_state_dict': self.optimizer.state_dict(),
+                    'scheduler_state_dict': self.scheduler.state_dict()
+                },
                 save_path)
         else:
             # save the entire ccip model
@@ -101,12 +103,13 @@ class TrainerCCIPModel:
             else: 
                 model_state_dict = self.model.state_dict()
 
-
             save_path = os.path.join(self.model_path, "ckpt_epoch{}.pth".format(self.epoch))
             torch.save({
-                'model_state_dict': model_state_dict, 
-                'optimizer_state_dict': self.optimizer.state_dict()
-                }, 
+                    'epoch': self.epoch,
+                    'model_state_dict': model_state_dict,
+                    'optimizer_state_dict': self.optimizer.state_dict(),
+                    'scheduler_state_dict': self.scheduler.state_dict()
+                },
                 save_path
             )
 
@@ -116,8 +119,10 @@ class TrainerCCIPModel:
         """
         checkpoint = torch.load(ckpt_path, map_location='cpu')
 
+        self.epoch = checkpoint.get('epoch') or self.epoch
         self.model.load_state_dict(checkpoint['model_state_dict'])
-        self.optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+        self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
 
         print("\n[INFO] CCIP Checkpoint successfully loaded")
         print(f"       Path: {ckpt_path}\n")
@@ -136,7 +141,7 @@ class TrainerCCIPModel:
         if ckpt is not None:
             self._load_ckpt(ckpt)
 
-        for epoch in range(self.num_epochs):
+        for epoch in range(self.epoch, self.num_epochs):
             self.epoch += 1
             total_loss = 0.0
 
@@ -144,7 +149,7 @@ class TrainerCCIPModel:
 
             for b, data in enumerate(pbar):
                 train_loss = self.train_one_step(data) 
-                pbar.set_description("EPOCH[{}/{}]".format(epoch, self.num_epochs, b))
+                pbar.set_description("EPOCH[{}/{}]".format(epoch + 1, self.num_epochs, b))
                 pbar.set_postfix(OrderedDict({"train loss": train_loss.item()}))
                 if self.step % 10 == 0:
                     self._record_loss(train_loss, mode='train')

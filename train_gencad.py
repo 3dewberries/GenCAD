@@ -54,8 +54,8 @@ def train_model(model="csr", args=None):
 
         # train model 
 
-        ae_trainer.train(train_loader=train_loader, val_loader=val_loader, val_loader_all=val_loader_all, ckpt=args.ckpt_path) 
-
+        ae_trainer.train(train_loader=train_loader, val_loader=val_loader, val_loader_all=val_loader_all, ckpt=args.ckpt_path)
+        # TBD: move the training complete report to here
 
     elif model=="ccip": 
 
@@ -66,7 +66,7 @@ def train_model(model="csr", args=None):
         phase = "train"
 
         cfg_cad = ConfigAE(phase=phase, overwrite=False)  # config file for AE is needed to load the model, inputs are not important
-
+        # TBD: get in sync the save/load format here and ccip_trainer
         cad_encoder = VanillaCADTransformer(cfg_cad)  # load cad autoencoder checkpoint 
         cad_checkpoint = torch.load(args.cad_ckpt_path, map_location='cpu')
         cad_encoder.load_state_dict(cad_checkpoint['model_state_dict'])
@@ -156,7 +156,7 @@ def train_model(model="csr", args=None):
         )
 
         trainer.train()
-
+        # TBD: move the training complete report to here
     else:
         raise Exception("please choose between: csr/ccip/dp")
     

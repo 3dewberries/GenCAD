@@ -144,7 +144,7 @@ class TrainerEncoderDecoder:
         checkpoint = torch.load(ckpt_path, map_location='cpu')
 
         # load model
-        self.epoch = checkpoint['epoch'] or self.epoch
+        self.epoch = checkpoint.get('epoch') or self.epoch
         self.model.load_state_dict(checkpoint['model_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
