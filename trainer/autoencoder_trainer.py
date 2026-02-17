@@ -143,8 +143,11 @@ class TrainerEncoderDecoder:
          
         checkpoint = torch.load(ckpt_path, map_location='cpu')
 
-        # load model 
+        # load model
+        self.epoch = checkpoint['epoch'] or self.epoch
         self.model.load_state_dict(checkpoint['model_state_dict'])
+        self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
         print("\n[INFO] CSR Checkpoint successfully loaded")
         print(f"       Path: {ckpt_path}\n")
 
@@ -153,6 +156,7 @@ class TrainerEncoderDecoder:
         model_state_dict = self.model.state_dict()
         save_path = os.path.join(self.model_path, "ckpt_epoch{}.pth".format(self.epoch))
         torch.save({
+            'epoch': self.epoch,
             'model_state_dict': model_state_dict, 
             'optimizer_state_dict': self.optimizer.state_dict(),
             'scheduler_state_dict': self.scheduler.state_dict()}, 
@@ -164,7 +168,7 @@ class TrainerEncoderDecoder:
         if ckpt is not None:
             self._load_ckpt(ckpt)
 
-        for epoch in range(self.num_epoch):
+        for epoch in range(self.epoch, self.num_epoch):
             self.epoch += 1
             pbar = tqdm(train_loader, leave=False)
 

@@ -15,7 +15,7 @@ class ConfigAE:
                     phase="train", num_epochs=10, 
                     lr=1e-3, batch_size=2,
                     load_ckpt=False, 
-                    save_every=50, 
+                    save_every=1, #50,
                     val_every=10, 
                     device=None, 
                     overwrite=False):

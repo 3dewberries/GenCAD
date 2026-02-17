@@ -11,7 +11,7 @@ class ConfigCCIP:
                     phase="train", num_epochs=300, 
                     lr=1e-3, batch_size=64,
                     load_ckpt=False, 
-                    save_every=25, 
+                    save_every=1, #25,
                     val_every=5, 
                     device=None, 
                     image_model='resnet_18', 
