@@ -9,10 +9,10 @@ class ConfigCCIP:
     """
     def __init__(self, exp_name="test_model", 
                     phase="train", num_epochs=300, 
-                    lr=1e-3, batch_size=64,
+                    lr=1e-3, batch_size=56, #64,
                     load_ckpt=False, 
                     save_every=1, #25,
-                    val_every=5, 
+                    val_every=1, #5,
                     device=None, 
                     image_model='resnet_18', 
                     dim_latent=256, 
