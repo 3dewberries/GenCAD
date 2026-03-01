@@ -252,15 +252,14 @@ def main(img_dir, export_stl=False, export_img=False):
 
             shape = vec_to_CAD(cad_vec=cad_vec)
 
-            if export_img: 
-                img_name = img_path.split('.')[0].split('/')[-1]
+            if export_img:
+                img_name = img_path.split('/')[-1].split('.')[0]
                 os.makedirs(os.path.join(img_dir, "generated_images"), exist_ok=True) 
                 img_export_path = img_dir + "/generated_images/" + f"{img_name}.png"
                 save_view(shape, view_type='iso', save_path=img_export_path)
 
-
             if export_stl:
-                img_name = img_path.split('.')[0].split('/')[-1]
+                img_name = img_path.split('/')[-1].split('.')[0]
                 os.makedirs(os.path.join(img_dir, "stls"), exist_ok=True) 
                 export_path = img_dir + "/stls/" + f"{img_name}.stl"
                 write_stl_file(shape, export_path, mode="binary", linear_deflection=0.5, angular_deflection=0.3,)
