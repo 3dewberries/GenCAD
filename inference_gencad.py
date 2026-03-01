@@ -1,4 +1,5 @@
-import os 
+import os
+import traceback
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
@@ -17,7 +18,7 @@ from cadlib.macro import (
         N_ARGS_EXT_PARAM, EOS_IDX, MAX_TOTAL_LEN
         )
 
-from OCC.Extend.DataExchange import write_stl_file
+from OCC.Extend.DataExchange import write_stl_file, write_step_file
 from multiprocessing import cpu_count
 from cadlib.visualize import vec2CADsolid
 
@@ -124,11 +125,12 @@ def vec_to_CAD(cad_vec):
     
         return out_shape
     
-    except Exception as e:
+    except Exception:
         print('cannot create CAD')
+        traceback.print_exc()
 
 
-def main(img_dir, export_stl=False, export_img=False):
+def main(img_dir, export_stl=False, export_img=False, export_step=False):
     """
     
     img_dir: must contain images in png format
@@ -222,6 +224,7 @@ def main(img_dir, export_stl=False, export_img=False):
     image_files = glob.glob(f"{img_dir}/*.png")
 
     for img_path in tqdm(image_files):
+        print(f"\n\nProcessing image '{img_path}'\n")
         img = process_image(img_path).to(device)
 
         image_embed = clip_adapter.embed_image(img, normalization = False)
@@ -249,22 +252,27 @@ def main(img_dir, export_stl=False, export_img=False):
             # cad vector 
 
             cad_vec = out_vec[:seq_len]
-
             shape = vec_to_CAD(cad_vec=cad_vec)
+            img_name = img_path.split('/')[-1].split('.')[0]
 
             if export_img:
-                img_name = img_path.split('/')[-1].split('.')[0]
                 os.makedirs(os.path.join(img_dir, "generated_images"), exist_ok=True) 
                 img_export_path = img_dir + "/generated_images/" + f"{img_name}.png"
                 save_view(shape, view_type='iso', save_path=img_export_path)
 
             if export_stl:
-                img_name = img_path.split('/')[-1].split('.')[0]
                 os.makedirs(os.path.join(img_dir, "stls"), exist_ok=True) 
                 export_path = img_dir + "/stls/" + f"{img_name}.stl"
                 write_stl_file(shape, export_path, mode="binary", linear_deflection=0.5, angular_deflection=0.3,)
-        except:
-            print("cannot find EOS") 
+
+            if export_step:
+                os.makedirs(os.path.join(img_dir, "steps"), exist_ok=True)
+                export_path = img_dir + "/steps/" + f"{img_name}.step"
+                write_step_file(shape, export_path)
+
+        except Exception:
+            print("cannot export image or STL")
+            traceback.print_exc()
 
 
 if __name__ == "__main__":
@@ -274,6 +282,7 @@ if __name__ == "__main__":
     parser.add_argument("-image_path", type=str, required=True)
     parser.add_argument("-export_stl", action="store_true")
     parser.add_argument("-export_img", action="store_true")
+    parser.add_argument("-export_step", action="store_true")
     args = parser.parse_args()
 
-    main(args.image_path, export_stl=args.export_stl, export_img=args.export_img)
+    main(args.image_path, export_stl=args.export_stl, export_img=args.export_img, export_step=args.export_step)
